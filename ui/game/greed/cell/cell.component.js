@@ -17,6 +17,8 @@ function update(x, y, cellEl) {
    const didCatchOffer = selectOfferStatus() === OFFER_STATUSES.caught;
    const isCellCoordsEqualPrevious = x === selectPreviousOfferCoords().x && y === selectPreviousOfferCoords().y;
    const didMissOffer = selectOfferStatus() === OFFER_STATUSES.miss;
+   const didDefaultStatus = selectOfferStatus() === OFFER_STATUSES.default;
+   const isPlayer1InsideCell = x === selectPlayer1Coords().x && y === selectPlayer1Coords().y
 
    cellEl.innerHTML = '';
 
@@ -34,9 +36,8 @@ function update(x, y, cellEl) {
       const missedEl = Image('assets/images/missed-offer.png')
       cellEl.append(missedEl);
    }
-   const isPlayer1InsideCell = x === selectPlayer1Coords().x && y === selectPlayer1Coords().y
-
-   if (isPlayer1InsideCell &&  !didCatchOffer && !didMissOffer) {
+   //здесь логика, чтобы одновременно в ячейке присутствовала только одна картинка
+   if (isPlayer1InsideCell && (didDefaultStatus || (didMissOffer && !isCellCoordsEqualPrevious))) {
       const player1 = Image('assets/images/player1.png')
       cellEl.append(player1);
    }

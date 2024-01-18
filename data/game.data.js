@@ -87,7 +87,9 @@ function _missOffer() {
    setTimeout(() => {
       _data.offerStatus = OFFER_STATUSES.default;
       _notify()
+
    }, 200)
+
 }
 
 function _getRandom(N) {
