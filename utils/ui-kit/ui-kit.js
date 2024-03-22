@@ -3,7 +3,7 @@
 //    image.src = src;
 //    if (option.click) {
 //       image.addEventListener('click', option.click)
-//    
+//    }
 //    return image;
 // }
 
@@ -16,7 +16,7 @@ export function Image(src, listeners = {}) {
    //в этой игре не нужно
    //очень изящное решение
    // Object.keys(listeners).forEach(key => {
-   //    //пробегаемся по ключам объекта listeners и для каждого ключа вызываем функцию
+       //пробегаемся по ключам объекта listeners и для каждого ключа вызываем функцию
    //    image.addEventListener(key, listeners[key])
    // })
 

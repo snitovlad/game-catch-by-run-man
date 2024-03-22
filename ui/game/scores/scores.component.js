@@ -1,4 +1,4 @@
-import { selectScoreCaughtCount, selectScoreMissCount, subscribe } from '../../../data/game.data.js'
+import { selectPlayer1, selectPlayer2, subscribe } from '../../../data/game.data.js'
 
 export function Scores() {
    subscribe(() => {
@@ -12,5 +12,5 @@ export function Scores() {
 }
 
 function update(containerElement) {
-   containerElement.append('catch: ' + selectScoreCaughtCount() + '; miss: ' + selectScoreMissCount());
+   containerElement.append('player1: ' + selectPlayer1().score + '; player2: ' + selectPlayer2().score);
 }

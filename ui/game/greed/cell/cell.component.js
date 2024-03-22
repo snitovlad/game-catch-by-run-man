@@ -1,11 +1,11 @@
-import { catchOffer, OFFER_STATUSES, selectPlayer1Coords, subscribe } from "../../../../data/game.data.js";
-import { selectCurrentOfferCoords, selectOfferStatus, selectPreviousOfferCoords } from "../../../../data/game.data.js";
+import { REWARD_STATUSES, selectPlayer1, selectPlayer2 } from "../../../../data/game.data.js";
+import { selectCurrentRewardCoords, selectRewardStatus, selectPreviousRewardCoords } from "../../../../data/game.data.js";
 import { Image } from "../../../../utils/ui-kit/ui-kit.js";
 
 export function Cell(x, y) {
-   subscribe(() => {
-      update(x, y, cellEl)
-   })
+   // subscribe(() => {
+   //    update(x, y, cellEl)
+   // })
    const cellEl = document.createElement('td');
    update(x, y, cellEl);
    return cellEl;
@@ -13,18 +13,16 @@ export function Cell(x, y) {
 
 function update(x, y, cellEl) {
 
-   const isCellCoordsEqualCurrent = x === selectCurrentOfferCoords().x && y === selectCurrentOfferCoords().y;
-   const didCatchOffer = selectOfferStatus() === OFFER_STATUSES.caught;
-   const isCellCoordsEqualPrevious = x === selectPreviousOfferCoords().x && y === selectPreviousOfferCoords().y;
-   const didMissOffer = selectOfferStatus() === OFFER_STATUSES.miss;
-   const didDefaultStatus = selectOfferStatus() === OFFER_STATUSES.default;
-   const isPlayer1InsideCell = x === selectPlayer1Coords().x && y === selectPlayer1Coords().y
+   const isCellCoordsEqualCurrent = x === selectCurrentRewardCoords().x && y === selectCurrentRewardCoords().y;
+   const didCatchOffer = selectRewardStatus() === REWARD_STATUSES.caught;
+   const isCellCoordsEqualPrevious = x === selectPreviousRewardCoords().x && y === selectPreviousRewardCoords().y;
+   const didDefaultStatus = selectRewardStatus() === REWARD_STATUSES.default;
+   const isPlayer1InsideCell = x === selectPlayer1().coords.x && y === selectPlayer1().coords.y
+   const isPlayer2InsideCell = x === selectPlayer2().coords.x && y === selectPlayer2().coords.y
 
    cellEl.innerHTML = '';
 
    if (isCellCoordsEqualCurrent) {
-      // const offerEl = Image('assets/images/offer.png', {click: catchOffer})
-      //offerEl.addEventListener('click', catchOffer)
       const offerEl = Image('assets/images/offer.png')
       cellEl.append(offerEl);
    }
@@ -32,13 +30,14 @@ function update(x, y, cellEl) {
       const caughtEl = Image('assets/images/caught-offer.png')
       cellEl.append(caughtEl);
    }
-   if (didMissOffer && isCellCoordsEqualPrevious) {
-      const missedEl = Image('assets/images/missed-offer.png')
-      cellEl.append(missedEl);
-   }
+
    //здесь логика, чтобы одновременно в ячейке присутствовала только одна картинка
-   if (isPlayer1InsideCell && (didDefaultStatus || (didMissOffer && !isCellCoordsEqualPrevious))) {
+   if (isPlayer1InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) {
       const player1 = Image('assets/images/player1.png')
+      cellEl.append(player1);
+   }
+   if (isPlayer2InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) {
+      const player1 = Image('assets/images/player2.png')
       cellEl.append(player1);
    }
 }

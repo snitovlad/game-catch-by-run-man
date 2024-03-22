@@ -1,38 +1,61 @@
-import { movePlayer1Down, movePlayer1Left, movePlayer1Right, movePlayer1Up, selectSettingsColumnsCount, 
-   selectSettingsRowsCount } from '../../../data/game.data.js';
+import {
+   moveRewardToRandomPosition, movePlayer1Down, movePlayer1Left, movePlayer1Right, movePlayer1Up,
+   selectSettingsColumnsCount, selectSettingsRowsCount, subscribe, 
+   movePlayer2Up, movePlayer2Left, movePlayer2Down, movePlayer2Right } from '../../../data/game.data.js';
 import { Cell } from './cell/cell.component.js'
 
 export function Greed() {
+
+   moveRewardToRandomPosition(); //запустили случайную отрисовку начальных координат
+   subscribe(() => updateGrid(selectSettingsRowsCount(), selectSettingsColumnsCount(), containerElement))
+
    const containerElement = document.createElement('table');
-   for (let y = 0; y < selectSettingsRowsCount(); y++) {
+   containerElement.classList = 'grid';
+   updateGrid(selectSettingsRowsCount(), selectSettingsColumnsCount(), containerElement)
+   return containerElement;
+}
+
+//будем двигать человечка
+window.addEventListener('keyup', (e) => {
+   switch (e.code) {
+      
+      case 'ArrowUp':
+         movePlayer1Up();
+         console.log('movePlayer1Up')
+         break;
+      case 'ArrowDown':
+         movePlayer1Down();
+         break;
+      case 'ArrowLeft':
+         movePlayer1Left();
+         break;
+      case 'ArrowRight':
+         movePlayer1Right();
+         break;
+      
+      case 'KeyQ':
+         movePlayer2Up();
+         break;
+      case 'KeyA':
+         movePlayer2Down();
+         break;
+      case 'KeyX':
+         movePlayer2Left();
+         break;
+      case 'KeyC':
+         movePlayer2Right();
+         break;
+   }
+})
+
+function updateGrid(rows, columns, containerElement) {
+   containerElement.innerHTML = '';
+   for (let y = 0; y < rows; y++) {
       const row = document.createElement('tr');
-      for (let x = 0; x < selectSettingsColumnsCount(); x++) {
+      for (let x = 0; x < columns; x++) {
          const cell = Cell(x, y);
          row.append(cell)
-
       }
       containerElement.append(row)
    }
-
-   //будем двигать человечка
-   window.addEventListener('keydown', (e) => {
-      //console.log(e.code)
-      switch(e.code) {
-
-         case 'ArrowUp':
-            movePlayer1Up();
-            break;
-         case 'ArrowDown':
-            movePlayer1Down();
-            break;
-         case 'ArrowLeft':
-            movePlayer1Left();
-            break;
-         case 'ArrowRight':
-            movePlayer1Right();
-            break;
-      }
-   })
-
-   return containerElement;
 }
