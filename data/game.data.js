@@ -8,12 +8,17 @@ export const GAME_STATUS = {
    you_win: 'you_win',
    you_lose: 'you_lose'
 }
+
 const _data = {
    settings: {
       rowsCount: 3,
       columnsCount: 3,
       pointToWin: 5,
-      isMuted: true
+      isMuted: true,
+      timing: {
+         start: 30,
+         current: 30
+      }
    },
    gridSettings: [
       { width: 3, height: 3 },
@@ -23,6 +28,8 @@ const _data = {
       { width: 7, height: 7 },
       { width: 8, height: 8 },
    ],
+   timeSettings: [30, 60, 120, 180, 240, 300],
+   pointToWinSettings: [5, 20, 30, 40, 60, 80, 100],
    gameStatus: GAME_STATUS.in_process,
    reward: {
       status: REWARD_STATUSES.default,
@@ -36,14 +43,16 @@ const _data = {
          x: 1,
          y: 1,
       },
-      score: 0
+      score: 0,
+      name: 'player1',
    },
    player2: {
       coords: {
          x: 2,
          y: 2,
       },
-      score: 0
+      score: 0,
+      name: 'player2'
    }
 }
 let globalSubscriber = null;
@@ -88,12 +97,7 @@ function _getRandom(N) {
    return Math.floor(Math.random() * (N + 1))
 }
 
-//функция для смены размера сетки
-export function getGridSize(index) {
-   _data.settings.rowsCount = _data.gridSettings[index].width;
-   _data.settings.columnsCount = _data.gridSettings[index].height;
-   _notify(); //перерисовываем в greed.component.js
-}
+
 
 //создали функцию для попадания
 export function catchReward(player) {
@@ -104,6 +108,7 @@ export function catchReward(player) {
       //_data.gameStatus = GAME_STATUS.you_win
       _timeoutForCatchImage()
       gameStatusYouWin()
+      clearInterval(decreasOfGameTimeInterval)
       return
    }
    //присвоили предыдущие координаты для попадания
@@ -124,10 +129,43 @@ function _timeoutForCatchImage() {
    //очистили интервал
    clearInterval(stepIntervalId);
 }
+//=====settings===============================================================
+
+//функция для смены размера сетки
+export function getGridSize(index) {
+   _data.settings.rowsCount = _data.gridSettings[index].width;
+   _data.settings.columnsCount = _data.gridSettings[index].height;
+   _notify(); //перерисовываем в greed.component.js
+}
+//функция для времени игры
+let decreasOfGameTimeInterval;
+export function decreasOfGameTime() {
+   decreasOfGameTimeInterval = setInterval(() => {
+      _data.settings.timing.current--;
+      if (_data.settings.timing.current === 0) {
+         clearInterval(decreasOfGameTimeInterval)
+         clearInterval(stepIntervalId)
+         _data.gameStatus = GAME_STATUS.you_lose
+         globalSubscriber()
+      }
+      _notify();
+      //console.log(_data.settings.timing.current)
+   }, 1000)
+}
+export function getGameTime(index) {
+   _data.settings.timing.start = _data.timeSettings[index];
+   _data.settings.timing.current = _data.timeSettings[index];
+   _notify()
+   console.log(_data.settings.timing)
+}
+
+export function getPointsToWin(index) {
+   _data.settings.pointToWin = _data.pointToWinSettings[index]
+}
+
 //====статусы игры============================================================
 export function gameStatusYouWin() {
    _data.gameStatus = GAME_STATUS.you_win
-   console.log('you win')
    clearInterval(stepIntervalId)
    globalSubscriber()
 }
@@ -208,12 +246,14 @@ function _checkCatching(player) {
 //==============кнопка==============================
 export function buttonStartStop() {
    subscribers = [];
+   decreasOfGameTime()
    clearInterval(stepIntervalId)
    moveRewardToRandomPosition();
    //startTime = new Date;
    _data.player1.score = 0;
    _data.player2.score = 0;
    _data.gameStatus = GAME_STATUS.in_process
+   _data.settings.timing.current = selectStartGameTime()
    _runStepInterval()
    globalSubscriber()
 }
@@ -242,6 +282,22 @@ export function selectPlayer2() {
 export function selectGridSetting() {
    return _data.gridSettings;
 }
+export function selectTimeSettings() {
+   return _data.timeSettings;
+}
+export function selectStartGameTime() {
+   return _data.settings.timing.start;
+}
+export function selectCurrentGameTime() {
+   return _data.settings.timing.current;
+}
+
 export function selectGameStatus() {
    return _data.gameStatus;
+}
+export function selectGamePointToWin() {
+   return _data.settings.pointToWin;
+}
+export function selectPointToWinSettings() {
+   return _data.pointToWinSettings;
 }

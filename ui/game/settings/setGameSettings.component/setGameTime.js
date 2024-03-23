@@ -1,22 +1,22 @@
-import { getGridSize, selectGridSetting, selectSettingsColumnsCount, selectSettingsRowsCount } from "../../../../data/game.data.js";
+import { getGameTime, selectStartGameTime, selectTimeSettings } from "../../../../data/game.data.js";
 
-export function SetGridSize() {
 
+export function SetGameTime() {
    const containerElement = document.createElement('div');
 
    const titleElement = document.createElement('p');
-   titleElement.append('Grid size');
+   titleElement.append('Time');
    containerElement.append(titleElement);
 
    const selectElement = document.createElement('select');
 
-   selectGridSetting().map((el, index) => {
+   selectTimeSettings().map((el, index) => {
       const optionElement = document.createElement('option');
       //index - получили порядковый номер в массиве размеров игрового поля и присвоили value в option
       optionElement.value = index;
-      optionElement.append(`${el.width} x ${el.height}`);
+      optionElement.append(`${el / 60} min`);
       //выделяем нужный option
-      if (el.width === selectSettingsColumnsCount() && el.height === selectSettingsRowsCount()) {
+      if (el === selectStartGameTime()) {
          optionElement.selected = true
       }
       selectElement.append(optionElement);
@@ -25,10 +25,10 @@ export function SetGridSize() {
 
    selectElement.addEventListener('change', (e) => {
       const selectedIndex = e.currentTarget.value
-      getGridSize(selectedIndex)
+      getGameTime(selectedIndex)
    })
 
-
    containerElement.append(selectElement);
+
    return containerElement;
 }

@@ -1,7 +1,8 @@
 import {
    moveRewardToRandomPosition, movePlayer1Down, movePlayer1Left, movePlayer1Right, movePlayer1Up,
-   selectSettingsColumnsCount, selectSettingsRowsCount, subscribe, 
-   movePlayer2Up, movePlayer2Left, movePlayer2Down, movePlayer2Right } from '../../../data/game.data.js';
+   selectSettingsColumnsCount, selectSettingsRowsCount, subscribe,
+   movePlayer2Up, movePlayer2Left, movePlayer2Down, movePlayer2Right
+} from '../../../data/game.data.js';
 import { Cell } from './cell/cell.component.js'
 
 export function Greed() {
@@ -18,10 +19,9 @@ export function Greed() {
 //будем двигать человечка
 window.addEventListener('keyup', (e) => {
    switch (e.code) {
-      
+
       case 'ArrowUp':
          movePlayer1Up();
-         console.log('movePlayer1Up')
          break;
       case 'ArrowDown':
          movePlayer1Down();
@@ -32,7 +32,7 @@ window.addEventListener('keyup', (e) => {
       case 'ArrowRight':
          movePlayer1Right();
          break;
-      
+
       case 'KeyQ':
          movePlayer2Up();
          break;

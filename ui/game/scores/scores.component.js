@@ -1,4 +1,4 @@
-import { selectPlayer1, selectPlayer2, subscribe } from '../../../data/game.data.js'
+import { selectPlayer1, selectPlayer2, subscribe, selectCurrentGameTime } from '../../../data/game.data.js'
 
 export function Scores() {
    subscribe(() => {
@@ -12,5 +12,11 @@ export function Scores() {
 }
 
 function update(containerElement) {
-   containerElement.append('player1: ' + selectPlayer1().score + '; player2: ' + selectPlayer2().score);
+   let min = Math.floor(selectCurrentGameTime() / 60).toString()
+   if (min.length === 1) min = 0 + min
+   let sec = (selectCurrentGameTime() % 60).toString()
+   if (sec.length === 1) sec = 0 + sec
+   containerElement.append('player1: ' + selectPlayer1().score
+      + '; player2: ' + selectPlayer2().score
+      + '; time: ' + min + ': ' + sec);
 }

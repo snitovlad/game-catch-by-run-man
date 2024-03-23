@@ -1,5 +1,5 @@
-export function gameStatusWinLose() {
+export function gameStatusWinLose(title) {
     const containerElement = document.createElement('div')
-    containerElement.append('you win')
+    containerElement.append(title)
     return containerElement
 }
