@@ -9,7 +9,13 @@ export const GAME_STATUS = {
    you_lose: 'you_lose'
 }
 
+export const GAME_MODE = {
+   multiplayer: 'Multiplayer',
+   single: 'Single'
+}
+
 const _data = {
+
    settings: {
       rowsCount: 3,
       columnsCount: 3,
@@ -18,8 +24,10 @@ const _data = {
       timing: {
          start: 30,
          current: 30
-      }
+      },
+      gameMode: GAME_MODE.multiplayer
    },
+
    gridSettings: [
       { width: 3, height: 3 },
       { width: 4, height: 4 },
@@ -30,7 +38,9 @@ const _data = {
    ],
    timeSettings: [30, 60, 120, 180, 240, 300],
    pointToWinSettings: [5, 20, 30, 40, 60, 80, 100],
-   gameStatus: GAME_STATUS.in_process,
+   //получили массив всех значений из объекта GAME_MODE
+   gameModes: Object.values(GAME_MODE),
+   gameStatus: GAME_STATUS.settings,
    reward: {
       status: REWARD_STATUSES.default,
       coords: {
@@ -55,6 +65,7 @@ const _data = {
       name: 'player2'
    }
 }
+
 let globalSubscriber = null;
 export function globalSubscribe(newGlobalSubscriber) {
    globalSubscriber = newGlobalSubscriber
@@ -158,10 +169,30 @@ export function getGameTime(index) {
    _notify()
    console.log(_data.settings.timing)
 }
-
+//устанавливаем количество очков для выигрыша
 export function getPointsToWin(index) {
    _data.settings.pointToWin = _data.pointToWinSettings[index]
 }
+//устанавливаем режим игры single or multiplayer
+export function getGameMode(index) {
+   _data.settings.gameMode = _data.gameModes[index]
+   if (selectGameMode() === GAME_MODE.single) {
+      _data.player2.coords.x = -10;
+      _data.player2.coords.y = -10;
+   } else {
+      _data.player2.coords.x = 2;
+      _data.player2.coords.y = 2;
+   }
+   
+   globalSubscriber()
+   // _data.player2.coords.x = -10;
+   // _data.player2.coords.y = -10;
+}
+// export function multiplayerGameMode() {
+//    _data.settings.gameMode = GAME_MODE.multiplayer
+//    _data.player2.coords.x = 2;
+//    _data.player2.coords.y = 2;
+// }
 
 //====статусы игры============================================================
 export function gameStatusYouWin() {
@@ -267,6 +298,13 @@ export function selectPreviousRewardCoords() {
 export function selectRewardStatus() {
    return _data.reward.status
 }
+export function selectGameMode() {
+   return _data.settings.gameMode
+}
+export function selectGameModeArr() {
+   return _data.gameModes
+}
+
 export function selectSettingsRowsCount() {
    return _data.settings.rowsCount
 }

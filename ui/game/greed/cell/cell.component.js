@@ -1,4 +1,4 @@
-import { REWARD_STATUSES, selectPlayer1, selectPlayer2 } from "../../../../data/game.data.js";
+import { GAME_MODE, REWARD_STATUSES, selectGameMode, selectPlayer1, selectPlayer2 } from "../../../../data/game.data.js";
 import { selectCurrentRewardCoords, selectRewardStatus, selectPreviousRewardCoords } from "../../../../data/game.data.js";
 import { Image } from "../../../../utils/ui-kit/ui-kit.js";
 
@@ -36,7 +36,8 @@ function update(x, y, cellEl) {
       const player1 = Image('assets/images/player1.png')
       cellEl.append(player1);
    }
-   if (isPlayer2InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) {
+   if ((isPlayer2InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) 
+   && selectGameMode() === GAME_MODE.multiplayer) {
       const player1 = Image('assets/images/player2.png')
       cellEl.append(player1);
    }

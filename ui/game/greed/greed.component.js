@@ -1,7 +1,8 @@
 import {
    moveRewardToRandomPosition, movePlayer1Down, movePlayer1Left, movePlayer1Right, movePlayer1Up,
    selectSettingsColumnsCount, selectSettingsRowsCount, subscribe,
-   movePlayer2Up, movePlayer2Left, movePlayer2Down, movePlayer2Right
+   movePlayer2Up, movePlayer2Left, movePlayer2Down, movePlayer2Right, 
+   selectGameMode, GAME_MODE, selectGameStatus, GAME_STATUS
 } from '../../../data/game.data.js';
 import { Cell } from './cell/cell.component.js'
 
@@ -18,33 +19,37 @@ export function Greed() {
 
 //будем двигать человечка
 window.addEventListener('keyup', (e) => {
-   switch (e.code) {
-
-      case 'ArrowUp':
-         movePlayer1Up();
-         break;
-      case 'ArrowDown':
-         movePlayer1Down();
-         break;
-      case 'ArrowLeft':
-         movePlayer1Left();
-         break;
-      case 'ArrowRight':
-         movePlayer1Right();
-         break;
-
-      case 'KeyQ':
-         movePlayer2Up();
-         break;
-      case 'KeyA':
-         movePlayer2Down();
-         break;
-      case 'KeyX':
-         movePlayer2Left();
-         break;
-      case 'KeyC':
-         movePlayer2Right();
-         break;
+   if (selectGameStatus() === GAME_STATUS.in_process) {
+      switch (e.code) {
+         case 'ArrowUp':
+            movePlayer1Up();
+            break;
+         case 'ArrowDown':
+            movePlayer1Down();
+            break;
+         case 'ArrowLeft':
+            movePlayer1Left();
+            break;
+         case 'ArrowRight':
+            movePlayer1Right();
+            break;
+      }
+      if (selectGameMode() === GAME_MODE.multiplayer) {
+         switch (e.code) {
+            case 'KeyQ':
+               movePlayer2Up();
+               break;
+            case 'KeyA':
+               movePlayer2Down();
+               break;
+            case 'KeyX':
+               movePlayer2Left();
+               break;
+            case 'KeyC':
+               movePlayer2Right();
+               break;
+         }
+      }
    }
 })
 

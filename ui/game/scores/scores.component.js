@@ -1,4 +1,4 @@
-import { selectPlayer1, selectPlayer2, subscribe, selectCurrentGameTime } from '../../../data/game.data.js'
+import { selectPlayer1, selectPlayer2, subscribe, selectCurrentGameTime, selectGameMode, GAME_MODE } from '../../../data/game.data.js'
 
 export function Scores() {
    subscribe(() => {
@@ -16,7 +16,9 @@ function update(containerElement) {
    if (min.length === 1) min = 0 + min
    let sec = (selectCurrentGameTime() % 60).toString()
    if (sec.length === 1) sec = 0 + sec
-   containerElement.append('player1: ' + selectPlayer1().score
-      + '; player2: ' + selectPlayer2().score
-      + '; time: ' + min + ': ' + sec);
+   if (selectGameMode() === GAME_MODE.multiplayer) {
+      containerElement.append('player1: ' + selectPlayer1().score
+         + '; player2: ' + selectPlayer2().score
+         + '; time: ' + min + ': ' + sec);
+   } else { containerElement.append('player1: ' + selectPlayer1().score + '; time: ' + min + ': ' + sec); }
 }

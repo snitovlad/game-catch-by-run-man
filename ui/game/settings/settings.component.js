@@ -4,6 +4,7 @@
 //    return containerElement;
 // }
 
+import { SetGameMode } from "./setGameSettings.component/setGameMode.js";
 import { SetGameTime } from "./setGameSettings.component/setGameTime.js";
 import { SetGridSize } from "./setGameSettings.component/setGreedSize.js";
 import { SetPointsToWin } from "./setGameSettings.component/setPointsToWin.js";
@@ -22,8 +23,8 @@ export function Settings() {
    const setPointsToWin = SetPointsToWin();
    containerElement.append(setPointsToWin)
 
-   // const setMaximumMisses = SetMaximumMisses();
-   // containerElement.append(setMaximumMisses);
+   const setGameMode = SetGameMode();
+   containerElement.append(setGameMode);
 
    const setGameTime = SetGameTime();
    containerElement.append(setGameTime);
