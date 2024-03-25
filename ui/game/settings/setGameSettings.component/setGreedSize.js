@@ -1,34 +1,13 @@
 import { getGridSize, selectGridSetting, selectSettingsColumnsCount, selectSettingsRowsCount } from "../../../../data/game.data.js";
+import { createOptions } from "../../../../utils/ui-kit/ui-kit.js";
 
 export function SetGridSize() {
 
+   //создаем переменные, чтобы можно было пользоваться функцией для создания select и options
+   const arrOfGridSettings = selectGridSetting().map(el => `${el.width} x ${el.height}`)
+   const settingsColumnsCountXRowsCount = selectSettingsColumnsCount() + ' x ' + selectSettingsRowsCount()
+
    const containerElement = document.createElement('div');
-
-   const titleElement = document.createElement('p');
-   titleElement.append('Grid size');
-   containerElement.append(titleElement);
-
-   const selectElement = document.createElement('select');
-
-   selectGridSetting().map((el, index) => {
-      const optionElement = document.createElement('option');
-      //index - получили порядковый номер в массиве размеров игрового поля и присвоили value в option
-      optionElement.value = index;
-      optionElement.append(`${el.width} x ${el.height}`);
-      //выделяем нужный option
-      if (el.width === selectSettingsColumnsCount() && el.height === selectSettingsRowsCount()) {
-         optionElement.selected = true
-      }
-      selectElement.append(optionElement);
-   })
-
-
-   selectElement.addEventListener('change', (e) => {
-      const selectedIndex = e.currentTarget.value
-      getGridSize(selectedIndex)
-   })
-
-
-   containerElement.append(selectElement);
+   createOptions(containerElement, 'Grid size', arrOfGridSettings, '', settingsColumnsCountXRowsCount, getGridSize)
    return containerElement;
 }

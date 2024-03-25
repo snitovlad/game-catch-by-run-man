@@ -12,6 +12,9 @@ export function Scores() {
 }
 
 function update(containerElement) {
+   
+   // let time = selectCurrentGameTime() * 60
+   // console.log(time)
    let min = Math.floor(selectCurrentGameTime() / 60).toString()
    if (min.length === 1) min = 0 + min
    let sec = (selectCurrentGameTime() % 60).toString()

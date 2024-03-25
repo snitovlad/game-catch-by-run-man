@@ -22,7 +22,7 @@ const _data = {
       pointToWin: 5,
       isMuted: true,
       timing: {
-         start: 30,
+         start: 0.5,
          current: 30
       },
       gameMode: GAME_MODE.multiplayer
@@ -36,7 +36,7 @@ const _data = {
       { width: 7, height: 7 },
       { width: 8, height: 8 },
    ],
-   timeSettings: [30, 60, 120, 180, 240, 300],
+   timeSettings: [0.5, 1, 2, 3, 4, 5],
    pointToWinSettings: [5, 20, 30, 40, 60, 80, 100],
    //получили массив всех значений из объекта GAME_MODE
    gameModes: Object.values(GAME_MODE),
@@ -149,10 +149,17 @@ export function getGridSize(index) {
    _notify(); //перерисовываем в greed.component.js
 }
 //функция для времени игры
+export function getGameTime(index) {
+   _data.settings.timing.start = _data.timeSettings[index]
+   _data.settings.timing.current = _data.timeSettings[index] * 60;
+   _notify()
+}
+
 let decreasOfGameTimeInterval;
 export function decreasOfGameTime() {
    decreasOfGameTimeInterval = setInterval(() => {
       _data.settings.timing.current--;
+      console.log(_data.settings.timing.current)
       if (_data.settings.timing.current === 0) {
          clearInterval(decreasOfGameTimeInterval)
          clearInterval(stepIntervalId)
@@ -160,15 +167,9 @@ export function decreasOfGameTime() {
          globalSubscriber()
       }
       _notify();
-      //console.log(_data.settings.timing.current)
    }, 1000)
 }
-export function getGameTime(index) {
-   _data.settings.timing.start = _data.timeSettings[index];
-   _data.settings.timing.current = _data.timeSettings[index];
-   _notify()
-   console.log(_data.settings.timing)
-}
+
 //устанавливаем количество очков для выигрыша
 export function getPointsToWin(index) {
    _data.settings.pointToWin = _data.pointToWinSettings[index]
@@ -185,14 +186,7 @@ export function getGameMode(index) {
    }
    
    globalSubscriber()
-   // _data.player2.coords.x = -10;
-   // _data.player2.coords.y = -10;
 }
-// export function multiplayerGameMode() {
-//    _data.settings.gameMode = GAME_MODE.multiplayer
-//    _data.player2.coords.x = 2;
-//    _data.player2.coords.y = 2;
-// }
 
 //====статусы игры============================================================
 export function gameStatusYouWin() {
@@ -284,7 +278,7 @@ export function buttonStartStop() {
    _data.player1.score = 0;
    _data.player2.score = 0;
    _data.gameStatus = GAME_STATUS.in_process
-   _data.settings.timing.current = selectStartGameTime()
+   _data.settings.timing.current = selectStartGameTime() * 60
    _runStepInterval()
    globalSubscriber()
 }
