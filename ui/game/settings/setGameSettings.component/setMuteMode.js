@@ -1,23 +1,34 @@
-// import { getMuteMode } from "../../../../data/game.data.js";
+import { getMuteMode, selectMuteMode, soundSubscribe } from "../../../../data/game.data.js";
 
 
-// export function SetMuteMode() {
-//    const containerElement = document.createElement('div');
 
-//    const titleElement = document.createElement('p');
-//    titleElement.append('Mute mode');
-//    containerElement.append(titleElement);
+export function SetMuteMode() {
+    soundSubscribe(() => {
+        titleElement.innerHTML = ''
+        imageElement.innerHTML = ''
+        updateMuteMode(imageElement, titleElement)
+    })
 
-//    const checkboxElement = document.createElement('input');
-//    checkboxElement.type = 'checkbox';
-//    checkboxElement.checked = true;
+    const containerElement = document.createElement('div');
 
-//    checkboxElement.addEventListener('change', (e) => {
-//       const isChecked = e.currentTarget.checked
-//       getMuteMode(isChecked)
-//    })
+    const titleElement = document.createElement('p');
+    const imageElement = document.createElement('img');
 
-//    containerElement.append(checkboxElement);
+    updateMuteMode(imageElement, titleElement)
 
-//    return containerElement;
-// }
+    imageElement.addEventListener('click', () => getMuteMode())
+
+    containerElement.append(titleElement);
+    containerElement.append(imageElement);
+    return containerElement;
+}
+
+function updateMuteMode(imageElement, titleElement) {
+    if (selectMuteMode()) {
+        imageElement.src = 'assets/images/sound-off.png';
+        titleElement.append('Sound off')
+    } else {
+        imageElement.src = 'assets/images/sound-on.png';
+        titleElement.append('Sound on')
+    }
+}

@@ -1,4 +1,4 @@
-import { GAME_MODE, REWARD_STATUSES, selectGameMode, selectPlayer1, selectPlayer2 } from "../../../../data/game.data.js";
+import { GAME_MODE, PLAYER_CHOICE, REWARD_STATUSES, selectChoicePlayerInSetting, selectGameMode, selectPlayer1, selectPlayer2 } from "../../../../data/game.data.js";
 import { selectCurrentRewardCoords, selectRewardStatus, selectPreviousRewardCoords } from "../../../../data/game.data.js";
 import { Image } from "../../../../utils/ui-kit/ui-kit.js";
 
@@ -23,8 +23,8 @@ function update(x, y, cellEl) {
    cellEl.innerHTML = '';
 
    if (isCellCoordsEqualCurrent) {
-      const offerEl = Image('assets/images/offer.png')
-      cellEl.append(offerEl);
+      const rewardEl = Image('assets/images/offer.png')
+      cellEl.append(rewardEl);
    }
    if (didCatchOffer && isCellCoordsEqualPrevious) {
       const caughtEl = Image('assets/images/caught-offer.png')
@@ -33,12 +33,15 @@ function update(x, y, cellEl) {
 
    //здесь логика, чтобы одновременно в ячейке присутствовала только одна картинка
    if (isPlayer1InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) {
-      const player1 = Image('assets/images/player1.png')
+      let player1 = Image('assets/images/player1.png')
+      if (selectChoicePlayerInSetting() === PLAYER_CHOICE.player2) {
+         player1 = Image('assets/images/player2.png')
+      }      
       cellEl.append(player1);
    }
    if ((isPlayer2InsideCell && (didDefaultStatus || !isCellCoordsEqualPrevious)) 
    && selectGameMode() === GAME_MODE.multiplayer) {
-      const player1 = Image('assets/images/player2.png')
-      cellEl.append(player1);
+      const player2 = Image('assets/images/player2.png')
+      cellEl.append(player2);
    }
 }

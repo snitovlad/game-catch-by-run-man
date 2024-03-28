@@ -13,23 +13,27 @@ export const GAME_MODE = {
    multiplayer: 'Multiplayer',
    single: 'Single'
 }
+export const PLAYER_CHOICE = {
+   player1: 'Chily',
+   player2: 'Yuky'
+}
 
 const _data = {
 
    settings: {
-      rowsCount: 3,
-      columnsCount: 3,
+      rowsCount: 4,
+      columnsCount: 4,
       pointToWin: 5,
       isMuted: true,
       timing: {
          start: 0.5,
          current: 30
       },
-      gameMode: GAME_MODE.multiplayer
+      gameMode: GAME_MODE.multiplayer,
+      selectedPlayer: PLAYER_CHOICE.player1
    },
 
    gridSettings: [
-      { width: 3, height: 3 },
       { width: 4, height: 4 },
       { width: 5, height: 5 },
       { width: 6, height: 6 },
@@ -40,6 +44,7 @@ const _data = {
    pointToWinSettings: [5, 20, 30, 40, 60, 80, 100],
    //получили массив всех значений из объекта GAME_MODE
    gameModes: Object.values(GAME_MODE),
+   playersForChoice: Object.values(PLAYER_CHOICE),
    gameStatus: GAME_STATUS.settings,
    reward: {
       status: REWARD_STATUSES.default,
@@ -66,9 +71,17 @@ const _data = {
    }
 }
 
-let globalSubscriber = null;
+let _globalSubscriber = null;
 export function globalSubscribe(newGlobalSubscriber) {
-   globalSubscriber = newGlobalSubscriber
+   _globalSubscriber = newGlobalSubscriber
+}
+let _soundSubscriber = null;
+export function soundSubscribe(newSoundSubscriber) {
+   _soundSubscriber = newSoundSubscriber
+}
+let _scoreSubscriber = null;
+export function scoreSubscribe(newScoreSubscriber) {
+   _scoreSubscriber = newScoreSubscriber
 }
 
 let subscribers = [];
@@ -108,8 +121,6 @@ function _getRandom(N) {
    return Math.floor(Math.random() * (N + 1))
 }
 
-
-
 //создали функцию для попадания
 export function catchReward(player) {
    _data.reward.status = REWARD_STATUSES.caught;
@@ -136,7 +147,7 @@ function _timeoutForCatchImage() {
    }, 200)
    //чтобы offer переместился сразу после попадания, а не ждал setInterval
    moveRewardToRandomPosition();
-   _notify(); //добавили, т.к. убрали из moveOfferToRandomPosition
+   _notify(); 
    //очистили интервал
    clearInterval(stepIntervalId);
 }
@@ -146,15 +157,17 @@ function _timeoutForCatchImage() {
 export function getGridSize(index) {
    _data.settings.rowsCount = _data.gridSettings[index].width;
    _data.settings.columnsCount = _data.gridSettings[index].height;
-   _notify(); //перерисовываем в greed.component.js
+    //_notify(); //перерисовываем в greed.component.js
+   _globalSubscriber()
 }
 //функция для времени игры
 export function getGameTime(index) {
    _data.settings.timing.start = _data.timeSettings[index]
    _data.settings.timing.current = _data.timeSettings[index] * 60;
-   _notify()
+   // _notify()
+   _globalSubscriber()
 }
-
+//счетчик времени
 let decreasOfGameTimeInterval;
 export function decreasOfGameTime() {
    decreasOfGameTimeInterval = setInterval(() => {
@@ -164,9 +177,9 @@ export function decreasOfGameTime() {
          clearInterval(decreasOfGameTimeInterval)
          clearInterval(stepIntervalId)
          _data.gameStatus = GAME_STATUS.you_lose
-         globalSubscriber()
+         _globalSubscriber()
       }
-      _notify();
+      _scoreSubscriber();
    }, 1000)
 }
 
@@ -183,16 +196,26 @@ export function getGameMode(index) {
    } else {
       _data.player2.coords.x = 2;
       _data.player2.coords.y = 2;
-   }
-   
-   globalSubscriber()
+   }   
+   _globalSubscriber()
 }
-
+//выбираем игрока при режиме игры single
+export function selectedPlayer(index) {
+   _data.settings.selectedPlayer = _data.playersForChoice[index]
+   _globalSubscriber()
+}
+//включам или выключаем звук
+export function getMuteMode() {
+   if (selectMuteMode()) {
+      _data.settings.isMuted = false
+   } else {_data.settings.isMuted = true}
+   _soundSubscriber()
+}
 //====статусы игры============================================================
 export function gameStatusYouWin() {
    _data.gameStatus = GAME_STATUS.you_win
-   clearInterval(stepIntervalId)
-   globalSubscriber()
+   clearInterval(stepIntervalId)   
+   _globalSubscriber()
 }
 //====двигаем человечка=========================================================
 export function movePlayer1Up() {
@@ -274,13 +297,12 @@ export function buttonStartStop() {
    decreasOfGameTime()
    clearInterval(stepIntervalId)
    moveRewardToRandomPosition();
-   //startTime = new Date;
    _data.player1.score = 0;
    _data.player2.score = 0;
    _data.gameStatus = GAME_STATUS.in_process
    _data.settings.timing.current = selectStartGameTime() * 60
    _runStepInterval()
-   globalSubscriber()
+   _globalSubscriber()
 }
 //==============selectors==============================
 export function selectCurrentRewardCoords() {
@@ -298,7 +320,6 @@ export function selectGameMode() {
 export function selectGameModeArr() {
    return _data.gameModes
 }
-
 export function selectSettingsRowsCount() {
    return _data.settings.rowsCount
 }
@@ -323,7 +344,6 @@ export function selectStartGameTime() {
 export function selectCurrentGameTime() {
    return _data.settings.timing.current;
 }
-
 export function selectGameStatus() {
    return _data.gameStatus;
 }
@@ -332,4 +352,13 @@ export function selectGamePointToWin() {
 }
 export function selectPointToWinSettings() {
    return _data.pointToWinSettings;
+}
+export function selectChoicePlayers() {
+   return _data.playersForChoice;
+}
+export function selectChoicePlayerInSetting() {
+   return _data.settings.selectedPlayer;
+}
+export function selectMuteMode() {
+   return _data.settings.isMuted;
 }

@@ -1,12 +1,15 @@
 import { getGameMode, selectGameMode, selectGameModeArr } from "../../../../data/game.data.js";
-import { createOptions } from "../../../../utils/ui-kit/ui-kit.js";
+import { createOptions, createTitleForSelect } from "../../../../utils/ui-kit/ui-kit.js";
 
 
 export function SetGameMode() {
-   const containerElement = document.createElement('div');
+    const containerElement = document.createElement('div');
 
-   createOptions(containerElement, 'Game mode', selectGameModeArr(),
-        '', selectGameMode(), getGameMode)
+    const titleElement = createTitleForSelect('Game mode')
+    const selectElement = createOptions( selectGameModeArr(), '', selectGameMode(), getGameMode)
 
-   return containerElement;
+    containerElement.append(titleElement);
+    containerElement.append(selectElement);
+
+    return containerElement;
 }

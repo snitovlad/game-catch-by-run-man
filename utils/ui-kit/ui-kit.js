@@ -1,3 +1,5 @@
+import { GAME_STATUS, selectGameStatus } from "../../data/game.data.js";
+
 // export function Image(src, option = {}) {
 //    const image = document.createElement('img');
 //    image.src = src;
@@ -23,11 +25,14 @@ export function Image(src, listeners = {}) {
 }
 
 //=========функция для создания selector and options для settings=============================
-export function createOptions(containerElement, title, arrayForOptions, unit, selectedOption, getValueForSelect) {
+export function createTitleForSelect(title) {
    const titleElement = document.createElement('p');
    titleElement.append(title);
-   containerElement.append(titleElement);
+   return titleElement
+}
 
+export function createOptions( arrayForOptions, unit, selectedOption, getValueForSelect) {
+   
    const selectElement = document.createElement('select');
 
    arrayForOptions.map((el, index) => {
@@ -45,7 +50,7 @@ export function createOptions(containerElement, title, arrayForOptions, unit, se
            const selectedIndex = e.currentTarget.value
            getValueForSelect(selectedIndex)
        })
-       containerElement.append(selectElement);
-       return containerElement
    })
+   if (selectGameStatus() === GAME_STATUS.in_process) selectElement.disabled = true
+   return selectElement
 }

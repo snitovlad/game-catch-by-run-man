@@ -1,21 +1,13 @@
-// export function Settings() {
-//    const containerElement = document.createElement('div');
-//    containerElement.append('settings will be here')
-//    return containerElement;
-// }
-
+import { SetGamePlayer } from "./setGameSettings.component/playerChoice.js";
 import { SetGameMode } from "./setGameSettings.component/setGameMode.js";
 import { SetGameTime } from "./setGameSettings.component/setGameTime.js";
 import { SetGridSize } from "./setGameSettings.component/setGreedSize.js";
+import { SetMuteMode } from "./setGameSettings.component/setMuteMode.js";
 import { SetPointsToWin } from "./setGameSettings.component/setPointsToWin.js";
-// import { SetPointsToWin } from "./setGameSettings.component/setPointsToWin.js";
-// import { SetMaximumMisses } from "./setGameSettings.component/setMaximumMisses.js";
-// import { SetDecreaseMsAfterCatch } from "./setGameSettings.component/setDecreaseMsAfterCatch.js";
-// import { SetMuteMode } from "./setGameSettings.component/setMuteMode.js";
-
 
 export function Settings() {
    const containerElement = document.createElement('div');
+   containerElement.classList = 'settings'
 
    const setGridSize = SetGridSize();
    containerElement.append(setGridSize)
@@ -23,14 +15,17 @@ export function Settings() {
    const setPointsToWin = SetPointsToWin();
    containerElement.append(setPointsToWin)
 
-   const setGameMode = SetGameMode();
-   containerElement.append(setGameMode);
-
    const setGameTime = SetGameTime();
    containerElement.append(setGameTime);
 
-   // const setMuteMode = SetMuteMode();
-   // containerElement.append(setMuteMode);
+   const setGameMode = SetGameMode();
+   containerElement.append(setGameMode); 
+
+   const setGamePlayer = SetGamePlayer();
+   containerElement.append(setGamePlayer);
+
+   const setMuteMode = SetMuteMode();
+   containerElement.append(setMuteMode);
 
    return containerElement;
 }

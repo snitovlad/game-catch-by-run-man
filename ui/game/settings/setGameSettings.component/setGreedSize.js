@@ -1,5 +1,5 @@
 import { getGridSize, selectGridSetting, selectSettingsColumnsCount, selectSettingsRowsCount } from "../../../../data/game.data.js";
-import { createOptions } from "../../../../utils/ui-kit/ui-kit.js";
+import { createOptions, createTitleForSelect } from "../../../../utils/ui-kit/ui-kit.js";
 
 export function SetGridSize() {
 
@@ -8,6 +8,12 @@ export function SetGridSize() {
    const settingsColumnsCountXRowsCount = selectSettingsColumnsCount() + ' x ' + selectSettingsRowsCount()
 
    const containerElement = document.createElement('div');
-   createOptions(containerElement, 'Grid size', arrOfGridSettings, '', settingsColumnsCountXRowsCount, getGridSize)
+
+   const titleElement = createTitleForSelect('Grid size')   
+   const selectElement = createOptions( arrOfGridSettings, '', settingsColumnsCountXRowsCount, getGridSize)
+
+   containerElement.append(titleElement);
+   containerElement.append(selectElement);
+
    return containerElement;
 }
