@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* ================================== */
+body {
+    padding-top: 30px;
+    font-family: "Roboto", sans-serif;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4) url("assets/images/background.png") no-repeat center / cover;
+}
+
+table {
+    margin: 0 auto;
+    border-spacing: 10px;
+}
+table td {
+    border: 2px solid #999b95;
+    border-radius: 5px;
+    /* padding: 6px 12px; */
+    width: 85px;
+    height: 84px;
+    background: rgba(110, 117, 102, 0.3);
+    text-align: center;
+}
+
+.settings {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1162px;
+    margin: 0 auto 30px;
+    padding: 0 5px;
+}
+select {
+    border-radius: 5px;
+    padding: 6px 12px;
+    width: 206px;
+    height: 36px;
+    background: #191a1c;
+    font-weight: 400;
+    font-size: 16px;
+    /* line-height: 24px;  */
+    line-height: 1.5;
+    color: #fff;
+}
+.select-title {
+    font-weight: 400;
+    font-size: 14px;
+    /* line-height: 24px;  */
+    line-height: 1.71429;
+    color: #b6fde5;
+}
+.sound-image {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.score-block {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #4c5e50;
+    border-radius: 30px;
+    padding: 12px 36px;
+    max-width: 630px;
+    height: 48px;
+    margin: 0 auto 24px;
+    /* line-height: 24px;  */
+    line-height: 1.33333;
+    color: #fff;
+    background: rgba(57, 61, 55, 0.4);
+}
+.string-info-container {
+    display: flex;
+    justify-content: center;
+}
+.string-info {
+    display: inline-block;
+    border: 1px solid #9ea09b;
+    border-radius: 2px;
+    padding: 6px 24px 6px 12px;
+    max-width: 600px;
+    height: 36px;
+    background: rgba(122, 126, 116, 0.6);
+    font-weight: 400;
+    font-size: 14px;
+    /* line-height: 24px;  */
+    line-height: 1.71429;
+    color: #fffdfe;
+    margin: 0 auto 24px;
+}
+.game-start-button {
+    display: flex;
+   justify-content: center;
+    border: 2px solid #75f94c;
+    border-radius: 10px 2px;
+    padding: 12px 26px;
+    width: 210px;
+    height: 48px;
+    box-shadow:
+        0 -4px 10px 2px rgba(88, 191, 57, 0.25),
+        0 4px 10px 2px rgba(88, 191, 57, 0.25);
+    background: #58bf39;
+    font-weight: 500;
+    font-size: 24px;
+    /* line-height: 24px;  */
+    line-height: 1;
+    color: #fff;
+    margin: 5px auto;
+}
+.button_set .game-start-button {
+    padding: 10px 47px;
+ }
+.you_lose,
+.you_win {
+   width: 280px;
+   height: 498px;
+   margin: 100px auto;
+   padding-top: 250px;
+}
+.you_lose {
+   background: no-repeat url("assets/images/youLose.png");
+}
+
+.you_win {
+   background: no-repeat url("assets/images/youWin.png");
+}
+.score_list {
+    width: 200px;
+    margin: 0 auto;
+ }
+ .score_list p {
+font-weight: 400;
+font-size: 18px;
+/* line-height: 24px;  */
+line-height: 1.33333;
+color: #fff;
+margin-bottom: 20px;
+
+ }

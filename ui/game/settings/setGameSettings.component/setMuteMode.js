@@ -12,7 +12,9 @@ export function SetMuteMode() {
     const containerElement = document.createElement('div');
 
     const titleElement = document.createElement('p');
+    titleElement.classList = 'select-title'
     const imageElement = document.createElement('img');
+    imageElement.classList = 'sound-image'
 
     updateMuteMode(imageElement, titleElement)
 

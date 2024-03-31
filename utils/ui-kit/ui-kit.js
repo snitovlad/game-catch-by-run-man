@@ -27,6 +27,7 @@ export function Image(src, listeners = {}) {
 //=========функция для создания selector and options для settings=============================
 export function createTitleForSelect(title) {
    const titleElement = document.createElement('p');
+   titleElement.classList = 'select-title'
    titleElement.append(title);
    return titleElement
 }
@@ -34,6 +35,7 @@ export function createTitleForSelect(title) {
 export function createOptions( arrayForOptions, unit, selectedOption, getValueForSelect) {
    
    const selectElement = document.createElement('select');
+
 
    arrayForOptions.map((el, index) => {
        const optionElement = document.createElement('option');

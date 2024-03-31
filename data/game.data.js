@@ -14,8 +14,8 @@ export const GAME_MODE = {
    single: 'Single'
 }
 export const PLAYER_CHOICE = {
-   player1: 'Chily',
-   player2: 'Yuky'
+   player1: 'Player1',
+   player2: 'Player2'
 }
 
 const _data = {
@@ -59,7 +59,7 @@ const _data = {
          y: 1,
       },
       score: 0,
-      name: 'player1',
+      name: PLAYER_CHOICE.player1,
    },
    player2: {
       coords: {
@@ -67,7 +67,7 @@ const _data = {
          y: 2,
       },
       score: 0,
-      name: 'player2'
+      name: PLAYER_CHOICE.player2
    }
 }
 
@@ -147,6 +147,7 @@ function _timeoutForCatchImage() {
    }, 200)
    //чтобы offer переместился сразу после попадания, а не ждал setInterval
    moveRewardToRandomPosition();
+   _scoreSubscriber();
    _notify(); 
    //очистили интервал
    clearInterval(stepIntervalId);
@@ -202,6 +203,7 @@ export function getGameMode(index) {
 //выбираем игрока при режиме игры single
 export function selectedPlayer(index) {
    _data.settings.selectedPlayer = _data.playersForChoice[index]
+   _data.player1.name = _data.playersForChoice[index]
    _globalSubscriber()
 }
 //включам или выключаем звук
@@ -215,6 +217,11 @@ export function getMuteMode() {
 export function gameStatusYouWin() {
    _data.gameStatus = GAME_STATUS.you_win
    clearInterval(stepIntervalId)   
+   _globalSubscriber()
+}
+export function gameStatusSetting() {
+   _data.gameStatus = GAME_STATUS.settings
+   clearInterval(stepIntervalId)
    _globalSubscriber()
 }
 //====двигаем человечка=========================================================

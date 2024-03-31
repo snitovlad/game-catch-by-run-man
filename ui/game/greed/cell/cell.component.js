@@ -23,7 +23,7 @@ function update(x, y, cellEl) {
    cellEl.innerHTML = '';
 
    if (isCellCoordsEqualCurrent) {
-      const rewardEl = Image('assets/images/offer.png')
+      const rewardEl = Image('assets/images/google.png')
       cellEl.append(rewardEl);
    }
    if (didCatchOffer && isCellCoordsEqualPrevious) {
